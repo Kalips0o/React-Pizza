@@ -19,7 +19,7 @@ function Categories() {
     <div className="categories">
       <ul>
         {categories.map((value, index) => (
-          <li
+          <li key={index}
             onClick={() => {
               onClickCategory(index);
             }}
