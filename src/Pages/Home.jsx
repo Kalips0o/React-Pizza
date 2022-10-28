@@ -15,6 +15,8 @@ const Home = () => {
         setItems(arr);
         setIsLoading(false);
       });
+    //при возврате на предыдущую страницу, возвращает вверх страницы
+    window.scrollTo(0,0)
   }, []);
 
   return (
