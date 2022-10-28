@@ -3,7 +3,7 @@ import Categories from "../components/Categories";
 import Sort from "../components/Sort";
 import { Skeleton } from "../components/PizzaBlock/Skeleton";
 import PizzaBlock from "../components/PizzaBlock";
-import NotFound from "./NotFound";
+
 
 const Home = () => {
   const [items, setItems] = useState([]);
