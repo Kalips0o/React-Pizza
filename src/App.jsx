@@ -9,6 +9,7 @@ import Cart from "./Pages/Cart";
 
 
 
+
 export const SearchContext = React.createContext('');
 
 
@@ -17,6 +18,12 @@ function App() {
 
   return (
     <div className="wrapper">
+
+
+
+
+
+
      <SearchContext.Provider value={{searchValue, setSearchValue}}>
          <Header />
          <div className="content">
