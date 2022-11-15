@@ -16,12 +16,7 @@ const Home = () => {
   const { searchValue } = useContext(SearchContext);
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  // const [categoryId, setCategoryId] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  // const [sortType, setSortType] = useState({
-  //   name: "популярности",
-  //   sortProperty: "rating",
-  // });
 
   const onChangeCategory = (id) => {
     dispatch(setCategoryId(id));
@@ -43,15 +38,6 @@ const Home = () => {
         setItems(response.data);
         setIsLoading(false);
       });
-
-    // fetch(
-    //   `https://6356aacb2712d01e14f9c705.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
-    // )
-    //   .then((res) => res.json())
-    //   .then((arr) => {
-    //     setItems(arr);
-    //     setIsLoading(false);
-    //   });
 
     //при возврате на предыдущую страницу, возвращает вверх страницы
     window.scrollTo(0, 0);
