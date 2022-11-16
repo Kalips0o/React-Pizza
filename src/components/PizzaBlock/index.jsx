@@ -16,7 +16,7 @@ const addedCart=cartItem? cartItem.count:0
       price,
       imageUrl,
       type: typeNames[activeType],
-      size: activeSize,
+      size:sizes [activeSize],
     };
     dispatch(addItem(item));
   };
@@ -51,7 +51,7 @@ const addedCart=cartItem? cartItem.count:0
           </ul>
         </div>
         <div className="pizza-block__bottom">
-          <div className="pizza-block__price">от {price} ₽</div>
+          <div className="pizza-block__price">от {price} BYN </div>
           <button
             onClick={onClickAdd}
             className="button button--outline button--add"
