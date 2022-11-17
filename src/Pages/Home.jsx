@@ -14,6 +14,7 @@ import {
 } from "../redux/slices/filterSlice";
 import axios from "axios";
 import qs from "qs";
+import {setItems} from "../redux/slices/pizzaSlice";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -24,9 +25,12 @@ const Home = () => {
   const { categoryId, sort, currentPage } = useSelector(
     (state) => state.filter
   );
+  const items = useSelector(
+    (state) => state.pizza.items
+  );
 
   const { searchValue } = useContext(SearchContext);
-  const [items, setItems] = useState([]);
+
   const [isLoading, setIsLoading] = useState(true);
 
   const onChangeCategory = (id) => {
@@ -36,7 +40,7 @@ const Home = () => {
     dispatch(setCurrentPage(number));
   };
 
-  const fetchPizzas = () => {
+  const fetchPizzas = async () => {
     setIsLoading(true);
 
     const sortBy = sort.sortProperty.replace("-", "");
@@ -44,18 +48,22 @@ const Home = () => {
     const category = categoryId > 0 ? `category=${categoryId}` : "";
     const search = searchValue ? `&search=${searchValue}` : "";
 
-    axios
-      .get(
+    try {
+      //если код с бэка выполняется верно
+      const {data} = await axios.get(
         `https://6356aacb2712d01e14f9c705.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
-      )
-      .then((response) => {
-        setItems(response.data);
-        setIsLoading(false);
-      });
+      );
+      dispatch(setItems(data));
+    } catch (error) {
+      // если с бэка пришла ошибка
+      console.log("ERROR", error);
+      alert("Ошибка при получении пицц");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-
-//если изменили параметры и  был первый рендер
+  //если изменили параметры и  был первый рендер
   useEffect(() => {
     if (isMounted.current) {
       const queryString = qs.stringify({
@@ -69,28 +77,27 @@ const Home = () => {
     isMounted.current = true;
   }, [categoryId, sort.sortProperty, currentPage]);
 
-//если был первый рендер, то проверяем URL-параметры и сохраняем в редаксе
+  //если был первый рендер, то проверяем URL-параметры и сохраняем в редаксе
   useEffect(() => {
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1));
       const sort = sortList.find(
-          (obj) => obj.sortProperty === params.sortProperty
+        (obj) => obj.sortProperty === params.sortProperty
       );
 
       dispatch(
-          setFilters({
-            ...params,
-            sort,
-          })
+        setFilters({
+          ...params,
+          sort,
+        })
       );
 
       isSearch.curret = true;
     }
   }, []);
 
-//если был первый рендер, то запрашиваем пиццы
+  //если был первый рендер, то запрашиваем пиццы
   useEffect(() => {
-
     //при возврате на предыдущую страницу, возвращает вверх страницы
     window.scrollTo(0, 0);
     if (!isSearch.current) {
@@ -98,7 +105,7 @@ const Home = () => {
     }
     isSearch.current = false;
   }, [categoryId, sort.sortProperty, searchValue, currentPage]);
-  const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
+  const pizzas = items.map((obj: any) => <PizzaBlock key={obj.id} {...obj} />);
 
   const skeletons = [...new Array(6)].map((_, index) => (
     <Skeleton key={index} />
