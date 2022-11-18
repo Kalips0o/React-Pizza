@@ -1,11 +1,10 @@
-import React, { useEffect, useContext, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
 import qs from "qs";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { Skeleton } from "../components/PizzaBlock/Skeleton";
 
-import { SearchContext } from "../App";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectFilter,
