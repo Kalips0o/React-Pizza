@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {addItem, selectCartItemById} from "../../redux/slices/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addItem, selectCartItemById } from "../../redux/slices/cartSlice";
+import { Link } from "react-router-dom";
 
-function PizzaBlock({ id, title, price, imageUrl, sizes, types }) {
+function PizzaBlock({ id, title, price, imageUrl, sizes, types, obj }) {
   const typeNames = ["тонкое", "традиционное"];
-  const cartItem=useSelector(selectCartItemById(id))
+  const cartItem = useSelector(selectCartItemById(id));
   const dispatch = useDispatch();
   const [activeType, setActiveType] = useState(0);
   const [activeSize, setActiveSize] = useState(0);
-const addedCart=cartItem? cartItem.count:0
+  const addedCart = cartItem ? cartItem.count : 0;
   const onClickAdd = () => {
     const item = {
       id,
@@ -16,7 +17,7 @@ const addedCart=cartItem? cartItem.count:0
       price,
       imageUrl,
       type: typeNames[activeType],
-      size:sizes [activeSize],
+      size: sizes[activeSize],
     };
     dispatch(addItem(item));
   };
@@ -24,8 +25,11 @@ const addedCart=cartItem? cartItem.count:0
   return (
     <div className="pizza-block-wrapper">
       <div className="pizza-block">
-        <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
-        <h4 className="pizza-block__title">{title}</h4>
+        <Link key={id} to={`/pizza/${id}`}>
+          <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
+          <h4 className="pizza-block__title">{title}</h4>
+        </Link>
+
         <div className="pizza-block__selector">
           <ul>
             {types.map((typeId) => (
@@ -51,7 +55,7 @@ const addedCart=cartItem? cartItem.count:0
           </ul>
         </div>
         <div className="pizza-block__bottom">
-          <div className="pizza-block__price">от {price} BYN </div>
+          <div className="pizza-block__price">от {price} BYN</div>
           <button
             onClick={onClickAdd}
             className="button button--outline button--add"
