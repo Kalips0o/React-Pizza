@@ -22,7 +22,7 @@ const Search:React.FC = () => {
     updateSearchValue(event.target.value);
   };
 
-  const onClickClear = () => {
+  const onClickClear = (event: React.MouseEvent<SVGSVGElement>) => {
     dispatch(setSearchValue(""));
 
     setValue("");
