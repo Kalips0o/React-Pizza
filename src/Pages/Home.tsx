@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 
-import qs from "qs";
 import { useNavigate } from "react-router-dom";
 
 import { Skeleton } from "../components/PizzaBlock/Skeleton";
@@ -32,9 +31,9 @@ const Home: React.FC = () => {
   const isMounted = useRef(false);
   const { items, status } = useSelector(selectPizzaData);
 
-  const onChangeCategory = (id: number) => {
-    dispatch(setCategoryId(id));
-  };
+  const onChangeCategory = React.useCallback((idx: number) => {
+    dispatch(setCategoryId(idx));
+  }, []);
 
   const onChangePage = (page: number) => {
     dispatch(setCurrentPage(page));
@@ -107,7 +106,7 @@ const Home: React.FC = () => {
     <div className="container">
       <div className="content__top">
         <Categories value={categoryId} onChangeCategory={onChangeCategory} />
-        <Sort />
+        <Sort value={sort} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       {status === "error" ? (
